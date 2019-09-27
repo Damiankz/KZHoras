@@ -1,21 +1,19 @@
 const mongoose = require("mongoose");
-
 const Schema = mongoose.Schema;
 
 const exceptionTypeSchema = new Schema({
 	exceptionName: {
 		type: String,
-		required: true
+		required: true,
+		unique: true
 	},
 	color: {
 		type: String
 	},
-	Description: {
+	description: {
 		type: String,
 		required: true
 	}
 });
 
-const ExceptionType = mongoose.model("ExceptionType", exceptionTypeSchema);
-
-module.exports = ExceptionType;
+module.exports = mongoose.model("ExceptionType", exceptionTypeSchema);
