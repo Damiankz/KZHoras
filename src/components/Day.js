@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Event from "./Event";
 
-export default function Day({ empty, events, day }) {
+export default function Day({ empty, events, day, date }) {
   const [newEvents, setNewEvents] = useState(events);
   return (
-    <DayEntry empty={empty}>
-      <h4>{day}</h4>
+    <DayEntry empty={empty} day={day}>
+      <h4>{date>-1 && `${date + 1 } - `} {day}</h4>
       {events &&
         events.map((e, i) => {
           return <Event key={i}{...e} />;
@@ -20,7 +20,7 @@ const DayEntry = styled.div`
   flex-direction: column;
   align-items: center;
   border-radius: 6px;
-  background: ${props => (props.empty ? "grey" : "red")};
+  background: ${props => (props.empty || ['Sunday', 'Saturday'].indexOf(props.day) != -1 ? "#afafaf" : "white")};
   h4 {
     margin: 4px 0;
   }

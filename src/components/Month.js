@@ -3,8 +3,7 @@ import styled from "styled-components";
 
 import Day from "./Day";
 import { startOfMonth } from "date-fns";
-import { navigate } from '@reach/router';
-
+import { navigate, Redirect } from '@reach/router';
 export default function Month({
   month,
   year
@@ -29,31 +28,33 @@ export default function Month({
   const monthName = monthNames[month - 1]
 
   return (
-    <>
-      <NavigationButton
-        onClick={() => navigate(getPreviousMonth(month, year))}
-        position={'left'}>
-        {'<'}
-      </NavigationButton>
-      <div>
-        <h3>{monthName} - {year}</h3>
-        <CalendarStyles
-          style={{ height: "700px" }}
-          rows={rowNumToRender(month, firstMonthDay)}>
-          {
-            days.map(
-              (day, i) => (
-                <Day key={i} {...day} />
+    month > 0 && month < 13 ?
+      <>
+        <NavigationButton
+          onClick={() => navigate(getPreviousMonth(month, year))}
+          position={'left'}>
+          {'<'}
+        </NavigationButton>
+        <div>
+          <h1 style={{ textAlign: 'center' }}>{monthName} - {year}</h1>
+          <CalendarStyles
+            style={{ height: "700px" }}
+            rows={rowNumToRender(month, firstMonthDay)}>
+            {
+              days.map(
+                (day, i) => (
+                  <Day key={i} {...day} />
+                )
               )
-            )
-          }
-        </CalendarStyles>
-      </div>
-      <NavigationButton
-        onClick={() => navigate(getNextMonth(month, year))}>
-        {'>'}
-      </NavigationButton>
-    </>
+            }
+          </CalendarStyles>
+        </div>
+        <NavigationButton
+          onClick={() => navigate(getNextMonth(month, year))}>
+          {'>'}
+        </NavigationButton>
+      </> :
+      <Redirect to="/" noThrow />
   );
 }
 
@@ -63,23 +64,28 @@ const NavigationButton = styled.button`
   top: 50%;
   left: ${props => props.position == 'left' ? '20px' : 'auto'};
   right: ${props => props.position == 'left' ? 'auto' : '20px'};
-  background-color: red;
-  border: 1px solid blue;
+  background-color: #661F7A;
+  border: 1px solid white;
+  color: white;
+  font-weight: bold;
+  font-family: 'Rubik';
   border-radius: 4px;
   width: 40px;
   height: 40px;
   &:active{
-    background: black;
+    background: #400a50;
   }
 `
 
 const CalendarStyles = styled.div`
-  max-width: 900px;
+  max-width: 1100px;
+  width: 1100px;
   margin:auto;
-  background: wheat;
+  background: #374154;
   padding: 20px;
   box-sizing: border-box;
-  display: grid;
+  display: grid;        
+  border-radius: 15px;
   grid-template-columns: repeat(7, 1fr);
   grid-template-rows: repeat(${props => props.rows}, 1fr);
   grid-gap: 10px;
